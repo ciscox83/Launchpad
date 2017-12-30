@@ -2,14 +2,13 @@ package my.launchpad;
 
 import org.apache.activemq.broker.BrokerService;
 import com.google.inject.Guice;
+import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.inject.Inject;
 
-import static org.junit.Assert.assertTrue;
-
-public class LaunchpadTest {
+public class LaunchpadTest extends CamelTestSupport {
 
   @Inject
   Launchpad launchpad;
@@ -30,6 +29,7 @@ public class LaunchpadTest {
     brokerService.setBrokerName("brokerTest");
     brokerService.addConnector("tcp://localhost:61616");
     brokerService.start();
+    template.sendBody("activemq:queue:EVENTS", "Margherita");
   }
 
   private void whenLaunchpadIsRunning() {
