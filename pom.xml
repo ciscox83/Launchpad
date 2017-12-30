@@ -35,6 +35,12 @@
             <version>5.15.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-kahadb-store</artifactId>
+            <version>5.15.2</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- App Scope -->
         <dependency>

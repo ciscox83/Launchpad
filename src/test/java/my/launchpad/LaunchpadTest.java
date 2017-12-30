@@ -7,6 +7,8 @@ import org.junit.Test;
 
 import javax.inject.Inject;
 
+import java.io.File;
+
 import static org.junit.Assert.assertTrue;
 
 public class LaunchpadTest {
@@ -20,14 +22,16 @@ public class LaunchpadTest {
   }
 
   @Test
-  public void launchpadTest() {
+  public void launchpadTest() throws Exception {
     givenTheQueueContainsPizzas();
     whenLaunchpadIsRunning();
   }
 
-  private void givenTheQueueContainsPizzas() {
+  private void givenTheQueueContainsPizzas() throws Exception {
     BrokerService brokerService = new BrokerService();
-
+    brokerService.setBrokerName("brokerTest");
+    brokerService.addConnector("tcp://localhost:61616");
+    brokerService.start();
   }
 
   private void whenLaunchpadIsRunning() {
