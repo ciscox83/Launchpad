@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import javax.inject.Inject;
 
+import static org.junit.Assert.assertTrue;
+
 public class LaunchpadTest {
 
   @Inject
@@ -22,7 +24,7 @@ public class LaunchpadTest {
   }
 
   private void whenLaunchpadIsRunning() {
-    launchpad.start();
+    assertTrue(launchpad.start());
   }
 
   private void createGuiceTestInjector() {

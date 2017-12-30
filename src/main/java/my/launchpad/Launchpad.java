@@ -1,5 +1,5 @@
 package my.launchpad;
 
 interface Launchpad {
-  void start();
+  boolean start();
 }
