@@ -7,8 +7,6 @@ import org.junit.Test;
 
 import javax.inject.Inject;
 
-import java.io.File;
-
 import static org.junit.Assert.assertTrue;
 
 public class LaunchpadTest {
