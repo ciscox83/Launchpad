@@ -1,3 +1,5 @@
+package my.launchpad;
+
 import org.junit.Test;
 
 public class LaunchpadTest {
