@@ -2,7 +2,12 @@ package my.launchpad;
 
 import org.junit.Test;
 
+import javax.inject.Inject;
+
 public class LaunchpadTest {
+
+  @Inject
+  Launchpad launchpad;
 
   @Test
   public void launchpadTest() {
@@ -10,7 +15,6 @@ public class LaunchpadTest {
   }
 
   private void whenLaunchpadIsRunning() {
-    Launchpad launchpad = new Launchpad();
     launchpad.start();
   }
 
