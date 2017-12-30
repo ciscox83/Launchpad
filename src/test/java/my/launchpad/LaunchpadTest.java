@@ -6,7 +6,7 @@ import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.inject.Inject;
+import com.google.inject.Inject;
 
 public class LaunchpadTest extends CamelTestSupport {
 
@@ -29,7 +29,6 @@ public class LaunchpadTest extends CamelTestSupport {
     brokerService.setBrokerName("brokerTest");
     brokerService.addConnector("tcp://localhost:61616");
     brokerService.start();
-    template.sendBody("activemq:queue:EVENTS", "Margherita");
   }
 
   private void whenLaunchpadIsRunning() {
