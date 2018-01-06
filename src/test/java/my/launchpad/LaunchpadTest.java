@@ -2,6 +2,7 @@ package my.launchpad;
 
 import org.apache.activemq.broker.BrokerService;
 import com.google.inject.Guice;
+import org.apache.camel.CamelContext;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +13,9 @@ public class LaunchpadTest extends CamelTestSupport {
 
   @Inject
   Launchpad launchpad;
+
+  @Inject
+  CamelContext camel;
 
   @Before
   public void setUp() {
@@ -29,6 +33,7 @@ public class LaunchpadTest extends CamelTestSupport {
     brokerService.setBrokerName("brokerTest");
     brokerService.addConnector("tcp://localhost:61616");
     brokerService.start();
+    camel.createProducerTemplate().sendBody("vm:queue:EVENTS", "Margherita");
   }
 
   private void whenLaunchpadIsRunning() {
