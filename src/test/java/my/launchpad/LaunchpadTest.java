@@ -1,9 +1,11 @@
 package my.launchpad;
 
+import org.apache.activemq.broker.Broker;
 import org.apache.activemq.broker.BrokerService;
 import com.google.inject.Guice;
 import org.apache.camel.CamelContext;
 import org.apache.camel.test.junit4.CamelTestSupport;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,9 +19,17 @@ public class LaunchpadTest extends CamelTestSupport {
   @Inject
   CamelContext camel;
 
+  BrokerService brokerService;
+
   @Before
-  public void setUp() {
+  public void before() {
+    brokerService = new BrokerService();
     createGuiceTestInjector();
+  }
+
+  @After
+  public void after() throws Exception {
+    brokerService.stop();
   }
 
   @Test
@@ -29,7 +39,6 @@ public class LaunchpadTest extends CamelTestSupport {
   }
 
   private void givenTheQueueContainsPizzas() throws Exception {
-    BrokerService brokerService = new BrokerService();
     brokerService.setBrokerName("brokerTest");
     brokerService.addConnector("tcp://localhost:61616");
     brokerService.start();
