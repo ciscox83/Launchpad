@@ -1,6 +1,5 @@
 package my.launchpad;
 
-import org.apache.activemq.broker.Broker;
 import org.apache.activemq.broker.BrokerService;
 import com.google.inject.Guice;
 import org.apache.camel.CamelContext;
@@ -34,18 +33,18 @@ public class LaunchpadTest extends CamelTestSupport {
 
   @Test
   public void launchpadTest() throws Exception {
-    givenTheQueueContainsPizzas();
-    whenLaunchpadIsRunning();
+    givenTheQueueContainsAPizza();
+    whenLaunchpadRan();
   }
 
-  private void givenTheQueueContainsPizzas() throws Exception {
+  private void givenTheQueueContainsAPizza() throws Exception {
     brokerService.setBrokerName("brokerTest");
     brokerService.addConnector("tcp://localhost:61616");
     brokerService.start();
-    camel.createProducerTemplate().sendBody("vm:queue:EVENTS", "Margherita");
+    camel.createProducerTemplate().sendBody("vm:queue:EVENTS", "<xml><pizza name=\"Margherita\" eat=\"false\"/></xml>");
   }
 
-  private void whenLaunchpadIsRunning() {
+  private void whenLaunchpadRan() {
     assertTrue(launchpad.start());
   }
 
