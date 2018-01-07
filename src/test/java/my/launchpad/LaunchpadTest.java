@@ -48,7 +48,7 @@ public class LaunchpadTest extends CamelTestSupport {
   }
 
   private void thenPizzaShouldBeEat() throws IOException {
-    String pizza = Files.readFirstLine(new File("target/consumed_pizzas.txt"), Charset.defaultCharset());
+    String pizza = Files.readFirstLine(new File("target/output/test/consumed_pizzas.txt"), Charset.defaultCharset());
     assertEquals("Margherita", pizza);
   }
 
