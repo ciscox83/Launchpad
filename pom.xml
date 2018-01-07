@@ -37,9 +37,8 @@
         </dependency>
         <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-kahadb-store</artifactId>
+            <artifactId>activemq-camel</artifactId>
             <version>5.15.2</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>

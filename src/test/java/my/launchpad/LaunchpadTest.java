@@ -1,16 +1,13 @@
 package my.launchpad;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import org.apache.activemq.broker.BrokerService;
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import org.apache.camel.CamelContext;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.google.inject.Inject;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,49 +16,44 @@ import java.nio.charset.Charset;
 public class LaunchpadTest extends CamelTestSupport {
 
   @Inject
-  Launchpad launchpad;
-
-  @Inject
   CamelContext camel;
-
-  BrokerService brokerService;
 
   @Before
   public void before() {
-    brokerService = new BrokerService();
     createGuiceTestInjector();
   }
 
   @After
   public void after() throws Exception {
-    brokerService.stop();
+    camel.stop();
   }
 
   @Test
   public void launchpadTest() throws Exception {
-    givenTheQueueContainsAPizza();
-    whenLaunchpadRan();
+    givenLaunchPadIsRunning();
+    whenAPizzaIsSent();
     thenPizzaShouldBeEat();
   }
 
-  private void givenTheQueueContainsAPizza() throws Exception {
-    brokerService.setBrokerName("brokerTest");
-    brokerService.addConnector("tcp://localhost:61616");
-    brokerService.start();
-    camel.createProducerTemplate().sendBody("vm:queue:EVENTS", "<xml><pizza name=\"Margherita\"/></xml>");
+  private void givenLaunchPadIsRunning() {
+    assertFalse(camel.getUptime().isEmpty());
+    assertFalse(camel.isStartingRoutes());
   }
 
-  private void whenLaunchpadRan() {
-    assertTrue(launchpad.start());
+  private void whenAPizzaIsSent() throws InterruptedException {
+//    "<xml><pizza name=\"Margherita\"/></xml>"
+    camel.createProducerTemplate().sendBody("test-queue:queue:pizzas", "Margherita");
+    Thread.sleep(3000); // Give Camel time to process route
+
   }
 
   private void thenPizzaShouldBeEat() throws IOException {
-    String pizza = Files.readFirstLine(new File("consumed_pizzas.txt"), Charset.defaultCharset());
-    assertEquals(pizza, "Margherita");
+    String pizza = Files.readFirstLine(new File("target/consumed_pizzas.txt"), Charset.defaultCharset());
+    assertEquals("Margherita", pizza);
   }
 
   private void createGuiceTestInjector() {
-    Guice.createInjector(new LaunchpadTestModule()).injectMembers(this);
+    Guice.createInjector(new MainTestModule()).injectMembers(this);
   }
 
 }
