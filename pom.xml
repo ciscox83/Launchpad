@@ -24,9 +24,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>4.0</version>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-testlib</artifactId>
+            <version>${guice.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
-            <version>4.0</version>
+            <version>${guice.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>
@@ -73,6 +73,7 @@
     <properties>
         <camel.version>2.20.1</camel.version>
         <logback.version>1.2.3</logback.version>
+        <guice.version>4.1.0</guice.version>
     </properties>
 
 </project>

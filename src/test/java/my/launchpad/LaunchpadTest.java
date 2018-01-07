@@ -3,6 +3,7 @@ package my.launchpad;
 import com.google.common.io.Files;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
+import com.google.inject.util.Modules;
 import org.apache.camel.CamelContext;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.After;
@@ -53,7 +54,7 @@ public class LaunchpadTest extends CamelTestSupport {
   }
 
   private void createGuiceTestInjector() {
-    Guice.createInjector(new MainTestModule()).injectMembers(this);
+    Guice.createInjector(Modules.override(new LaunchpadModule()).with(new LaunchpadTestModule())).injectMembers(this);
   }
 
 }

@@ -8,7 +8,7 @@ import org.apache.camel.impl.DefaultCamelContext;
 
 import static org.apache.camel.component.jms.JmsComponent.jmsComponentAutoAcknowledge;
 
-public class MainTestModule extends AbstractModule {
+public class LaunchpadModule extends AbstractModule {
 
   @Override
   protected void configure() {
@@ -20,11 +20,28 @@ public class MainTestModule extends AbstractModule {
   }
 
   @Provides
-  CamelContext camelContext() {
+  protected JmsEndpoint pizzaInput() {
+    return new JmsEndpoint("prod-queue", "queue:pizzas");
+  }
+
+  @Provides
+  protected FileEndpoint pizzaOutput() {
+    return new FileEndpoint("target/output/prod", "consumed_pizzas.txt");
+  }
+
+  @Provides
+  protected PizzaRoute pizzaRouteTest(JmsEndpoint endpointInput, FileEndpoint endpointOutput) {
+    return new PizzaRoute(endpointInput, endpointOutput);
+  }
+
+  @Provides
+  CamelContext camelContext(PizzaRoute pizzaRoute) {
     CamelContext camel = new DefaultCamelContext();
-    camel.addComponent("test-queue", jmsComponentAutoAcknowledge(connectionFactory()));
+    camel.addComponent(
+            pizzaRoute.getEndpointInput().getJmsComponentName(),
+            jmsComponentAutoAcknowledge(connectionFactory()));
     try {
-      camel.addRoutes(new PizzaRoute());
+      camel.addRoutes(pizzaRoute);
       camel.setAutoStartup(true);
       camel.start();
     } catch (Exception e) {
