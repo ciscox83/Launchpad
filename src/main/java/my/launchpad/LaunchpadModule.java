@@ -31,7 +31,7 @@ public class LaunchpadModule extends AbstractModule {
 
   @Provides
   protected PizzaRoute pizzaRouteTest(JmsEndpoint endpointInput, FileEndpoint endpointOutput) {
-    return new PizzaRoute(endpointInput, endpointOutput);
+    return new PizzaRoute(endpointInput, endpointOutput, new PizzaNameChecker());
   }
 
   @Provides

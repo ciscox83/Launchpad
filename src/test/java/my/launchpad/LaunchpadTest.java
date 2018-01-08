@@ -30,10 +30,17 @@ public class LaunchpadTest extends CamelTestSupport {
   }
 
   @Test
-  public void launchpadTest() throws Exception {
+  public void aPizzaWithAProperNameShouldBeEat() throws Exception {
     givenLaunchPadIsRunning();
-    whenAPizzaIsSent();
+    whenAPizzaWithProperNameIsDelivered();
     thenPizzaShouldBeEat();
+  }
+
+  @Test
+  public void aPizzaWithAnImproperNameShouldNotBeEat() throws Exception {
+    givenLaunchPadIsRunning();
+    whenAPizzaWithImproperNameIsDelivered();
+    thenPizzaShouldNotBeEat();
   }
 
   private void givenLaunchPadIsRunning() {
@@ -41,16 +48,25 @@ public class LaunchpadTest extends CamelTestSupport {
     assertFalse(camel.isStartingRoutes());
   }
 
-  private void whenAPizzaIsSent() throws InterruptedException {
-//    "<xml><pizza name=\"Margherita\"/></xml>"
+  private void whenAPizzaWithProperNameIsDelivered() throws InterruptedException {
+    // "<xml><pizza name=\"Margherita\"/></xml>"
     camel.createProducerTemplate().sendBody("test-queue:queue:pizzas", "Margherita");
-    Thread.sleep(3000); // Give Camel time to process route
+    Thread.sleep(100); // Give Camel time to process route
+  }
 
+  private void whenAPizzaWithImproperNameIsDelivered() throws InterruptedException {
+    camel.createProducerTemplate().sendBody("test-queue:queue:pizzas", "Pepperoni");
+    Thread.sleep(100); // Give Camel time to process route
   }
 
   private void thenPizzaShouldBeEat() throws IOException {
     String pizza = Files.readFirstLine(new File("target/output/test/consumed_pizzas.txt"), Charset.defaultCharset());
     assertEquals("Margherita", pizza);
+  }
+
+  private void thenPizzaShouldNotBeEat() throws IOException {
+    String pizza = Files.readFirstLine(new File("target/output/test/consumed_pizzas.txt"), Charset.defaultCharset());
+    assertNull(pizza);
   }
 
   private void createGuiceTestInjector() {
